@@ -5,6 +5,9 @@ from supabase_connector import SupabaseConnector
 def main():
     st.title("Supabase Explorer V2")
     
+    # Ajouter un avertissement sur la persistence des profils
+    st.warning("⚠️ **Important:** Profile data is stored in session state and will be lost when the app is redeployed or after extended periods of inactivity. Please use the Export/Import functionality to save your profiles permanently.")
+    
     # Initialiser le stockage des profils dans session_state
     if 'profiles' not in st.session_state:
         st.session_state.profiles = {}
@@ -33,6 +36,7 @@ def main():
             file_name="supabase_profiles.json",
             mime="application/json"
         )
+        st.sidebar.info("💡 Save your profiles by exporting them regularly")
     
     # Interface principale
     col1, col2 = st.columns([3, 1])

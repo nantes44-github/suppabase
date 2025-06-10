@@ -26,8 +26,8 @@ class SupabaseConnector:
         else:
             raise Exception("Failed to list tables: " + response.text)
 
-    def get_records(self, table_name):
-        response = requests.get(f"{self.url}/rest/v1/{table_name}?limit=1", headers=self.headers)
+    def get_records(self, table_name, limit=10):
+        response = requests.get(f"{self.url}/rest/v1/{table_name}?limit={limit}", headers=self.headers)
         if response.status_code == 200:
             return response.json()  # Assuming the response is a JSON list of records
         #else:

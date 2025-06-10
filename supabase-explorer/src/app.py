@@ -11,7 +11,30 @@ def main():
     if 'current_profile' not in st.session_state:
         st.session_state.current_profile = "Default"
     
-    # Sélection ou création de profil
+    # Sidebar pour la gestion des profils
+    st.sidebar.header("Profile Management")
+    
+    # Import/Export de profils
+    uploaded_file = st.sidebar.file_uploader("Import Profiles", type="json")
+    if uploaded_file is not None:
+        try:
+            imported_profiles = json.load(uploaded_file)
+            st.session_state.profiles.update(imported_profiles)
+            st.sidebar.success("Profiles imported successfully!")
+            st.rerun()
+        except Exception as e:
+            st.sidebar.error(f"Error importing profiles: {e}")
+    
+    if st.session_state.profiles:
+        profile_json = json.dumps(st.session_state.profiles)
+        st.sidebar.download_button(
+            label="Export Profiles as JSON",
+            data=profile_json,
+            file_name="supabase_profiles.json",
+            mime="application/json"
+        )
+    
+    # Interface principale
     col1, col2 = st.columns([3, 1])
     
     with col1:
@@ -72,7 +95,7 @@ def main():
             }
             st.session_state.current_profile = profile_name
             st.success(f"Profile '{profile_name}' saved!")
-            st.rerun()  # Remplacé experimental_rerun par rerun
+            st.rerun()
     
     with col2:
         if st.button("Connect"):
@@ -95,10 +118,6 @@ def main():
                         st.write(records)
             else:
                 st.write("No tables found.")
-    
-    # Pour le débogage - afficher les profils sauvegardés
-    if st.checkbox("Show saved profiles"):
-        st.json(st.session_state.profiles)
 
 if __name__ == "__main__":
     main()

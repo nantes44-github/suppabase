@@ -3,7 +3,7 @@ import json
 from supabase_connector import SupabaseConnector
 
 def main():
-    st.title("Supabase Explorer")
+    st.title("Supabase Explorer V2")
     
     # Initialiser le stockage des profils dans session_state
     if 'profiles' not in st.session_state:
